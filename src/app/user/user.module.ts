@@ -1,3 +1,5 @@
+import { userReducer } from './user/user.reducer';
+import { StoreModule } from '@ngrx/store';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -12,7 +14,8 @@ const userRoutes: Routes = [
 @NgModule({
   imports: [
     SharedModule,
-    RouterModule.forChild(userRoutes)
+    RouterModule.forChild(userRoutes),
+    StoreModule.forFeature('user', userReducer)
   ],
   declarations: [
     LoginComponent

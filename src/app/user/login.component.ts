@@ -1,11 +1,8 @@
-
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AuthService } from './auth.service';
-import { Store, select } from '@ngrx/store';
-import { getMaskUserName, UserState, User } from './state/user.reducer';
 
 @Component({
   templateUrl: './login.component.html',
@@ -13,18 +10,12 @@ import { getMaskUserName, UserState, User } from './state/user.reducer';
 })
 export class LoginComponent implements OnInit {
   pageTitle = 'Log In';
-  errorMessage: string;
 
   maskUserName: boolean;
 
-  constructor(private authService: AuthService, private router: Router, private store: Store<User>) {
-  }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-
-    this.store.pipe(select(getMaskUserName)).subscribe(
-      maskUserName => this.maskUserName = maskUserName
-    );
 
   }
 
@@ -32,12 +23,8 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['welcome']);
   }
 
-  checkChanged(value: boolean): void {
-    // this.maskUserName = value;
-    this.store.dispatch({
-      type: 'MASK_USER_NAME',
-      payload: value
-    });
+  checkChanged(): void {
+    this.maskUserName = !this.maskUserName;
   }
 
   login(loginForm: NgForm): void {
@@ -51,8 +38,6 @@ export class LoginComponent implements OnInit {
       } else {
         this.router.navigate(['/products']);
       }
-    } else {
-      this.errorMessage = 'Please enter a user name and password.';
     }
   }
 }

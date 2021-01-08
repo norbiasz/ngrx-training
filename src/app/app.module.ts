@@ -17,6 +17,8 @@ import { PageNotFoundComponent } from './home/page-not-found.component';
 /* Feature Modules */
 import { UserModule } from './user/user.module';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   imports: [
@@ -28,7 +30,14 @@ import { StoreModule } from '@ngrx/store';
     // 1 arg. {} - store reducer
     // 2 arg. {} - opcjonalny obiekt konfiguracyjny
     // StoreModule.forRoot({}, {})
-    StoreModule.forRoot({})
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      // w przypadku gdy mamy otworzonych kilka okien wiemy gdzie zapięty jest
+      // debugger (można debugować tylko 1 okno)
+      name: 'Debug App',
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
   declarations: [
     AppComponent,

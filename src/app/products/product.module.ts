@@ -17,7 +17,7 @@ const productRoutes: Routes = [
   imports: [
     SharedModule,
     RouterModule.forChild(productRoutes),
-    // 1 arg. nazwa feature slice
+    // 1 arg. nazwa state slice
     // 2 arg. reducer, lub zestaw reducerów
     StoreModule.forFeature('products', productReducer)
   ],

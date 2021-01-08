@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
+import { getShowProductCode, State } from 'src/app/products/store/product.reducer';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -23,7 +24,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   selectedProduct: Product | null;
   sub: Subscription;
 
-  constructor(private store: Store<any>, private productService: ProductService) { }
+  constructor(private store: Store<State>, private productService: ProductService) { }
 
   ngOnInit(): void {
     this.sub = this.productService.selectedProductChanges$.subscribe(
@@ -35,13 +36,21 @@ export class ProductListComponent implements OnInit, OnDestroy {
       error: err => this.errorMessage = err
     });
 
-    this.store.select('products').subscribe(
-      products => {
-        if (products) {
-          this.displayCode = products.showProductCode;
-        }
-      }
+    // this.store.select('products').subscribe(
+    //   products => {
+    //     // mamy wprowadzony do reducera obiekt iniclalizujący
+    //     // dlatego możemy usubąć instrukcję if
+    //     if (products) {
+    //       this.displayCode = products.showProductCode;
+    //     }
+    //   }
+    // );
+
+    // pobranie danych z selektora
+    this.store.select(getShowProductCode).subscribe(
+      showProductCode => this.displayCode = showProductCode
     );
+
   }
 
   ngOnDestroy(): void {

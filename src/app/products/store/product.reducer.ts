@@ -1,12 +1,49 @@
-import { createAction, createReducer, on } from "@ngrx/store";
+import { createAction, createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
+import { Product } from '../product';
+import * as AppState from '../../state/app.state';
 
-export const productReducer = createReducer(
-  { showProductCode: true },
-  on(createAction('[Product] Toggle Product Code'), state => {
-    console.log('original state: ' + JSON.stringify(state));
+export interface State extends AppState.State {
+  // komponent products jest wczytywany jako Lazy Loadin
+  // dlatego rozszeszamy nasz global state app.state.ts
+  // o State z ProductState
+  products: ProductState;
+}
+
+export interface ProductState {
+  showProductCode: boolean;
+  currentProduct: Product;
+  products: Product[];
+}
+
+const initialState: ProductState = {
+  showProductCode: true,
+  currentProduct: null,
+  products: []
+};
+
+// deklaracja stalej dla Feature Selector'a (nie exportujemy jej)
+const getProductFeatureState = createFeatureSelector<ProductState>('products');
+// utworzenie selektora dla konkretnej właściwości (exportujemy)
+export const getShowProductCode = createSelector(
+  getProductFeatureState,
+  state => state.showProductCode
+);
+export const getCurrentProduct = createSelector(
+  getProductFeatureState,
+  state => state.currentProduct
+);
+export const getProducts = createSelector(
+  getProductFeatureState,
+  state => state.products
+);
+
+export const productReducer = createReducer<ProductState>(
+  // { showProductCode: true } as ProductState,
+  initialState,
+  on(createAction('[Product] Toggle Product Code'), (state): ProductState => {
     return {
       ...state,
       showProductCode: !state.showProductCode
-    }
+    };
   })
 );

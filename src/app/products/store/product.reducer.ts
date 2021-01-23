@@ -1,6 +1,7 @@
 import { createAction, createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 import { Product } from '../product';
 import * as AppState from '../../state/app.state';
+import * as ProductActions from './product.actions';
 
 export interface State extends AppState.State {
   // komponent products jest wczytywany jako Lazy Loadin
@@ -18,7 +19,7 @@ export interface ProductState {
 const initialState: ProductState = {
   showProductCode: true,
   currentProduct: null,
-  products: []
+  products: [],
 };
 
 // deklaracja stalej dla Feature Selector'a (nie exportujemy jej)
@@ -40,10 +41,41 @@ export const getProducts = createSelector(
 export const productReducer = createReducer<ProductState>(
   // { showProductCode: true } as ProductState,
   initialState,
-  on(createAction('[Product] Toggle Product Code'), (state): ProductState => {
+  // on(createAction('[Product] Toggle Product Code'), (state): ProductState => {
+  on(ProductActions.toggleProductCode, (state): ProductState => {
     return {
       ...state,
       showProductCode: !state.showProductCode
+    };
+  }),
+  on(ProductActions.setCurrentProduct, (state, action): ProductState => {
+    return {
+      ...state,
+      currentProduct: action.product
+    };
+  }),
+  on(ProductActions.clearCurrentProduct, (state): ProductState => {
+    return {
+      ...state,
+      currentProduct: null
+    };
+  }),
+  on(ProductActions.initializeCurrentProduct, (state): ProductState => {
+    return {
+      ...state,
+      currentProduct: {
+        id: 0,
+        productName: 'test',
+        productCode: 'test',
+        description: 'test',
+        starRating: 0
+      }
+    };
+  }),
+  on(ProductActions.loadProductsSuccess, (state, action): ProductState => {
+    return {
+      ...state,
+      products: action.products
     };
   })
 );

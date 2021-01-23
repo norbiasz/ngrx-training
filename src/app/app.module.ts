@@ -19,6 +19,8 @@ import { UserModule } from './user/user.module';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './app.effects';
 
 @NgModule({
   imports: [
@@ -27,9 +29,6 @@ import { environment } from 'src/environments/environment';
     HttpClientInMemoryWebApiModule.forRoot(ProductData),
     UserModule,
     AppRoutingModule,
-    // 1 arg. {} - store reducer
-    // 2 arg. {} - opcjonalny obiekt konfiguracyjny
-    // StoreModule.forRoot({}, {})
     StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({
       // w przypadku gdy mamy otworzonych kilka okien wiemy gdzie zapięty jest
@@ -38,6 +37,7 @@ import { environment } from 'src/environments/environment';
       maxAge: 25,
       logOnly: environment.production,
     }),
+    EffectsModule.forRoot([]),
   ],
   declarations: [
     AppComponent,

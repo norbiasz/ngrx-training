@@ -1,4 +1,4 @@
-import { userReducer } from './user/user.reducer';
+import { userReducer } from './state/user.reducer';
 import { StoreModule } from '@ngrx/store';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';

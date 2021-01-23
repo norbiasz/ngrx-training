@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Observable, Subscription } from 'rxjs';
-import { getShowProductCode, getCurrentProduct, State } from 'src/app/products/store/product.reducer';
+import { getShowProductCode, getCurrentProduct, State, getError } from 'src/app/products/store/product.reducer';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -26,17 +26,22 @@ export class ProductListComponent implements OnInit {
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
   sub: Subscription;
+
   products$: Observable<Product[]>;
   selectedProduct$: Observable<Product>;
   displayCode$: Observable<boolean>;
+  errorMessage$: Observable<string>;
 
-  constructor(private store: Store<State>, private productService: ProductService) { }
+  constructor(private store: Store<State>) { }
 
   ngOnInit(): void {
+
+    this.errorMessage$ = this.store.select(getError);
+
     // this.store.select(getCurrentProduct).subscribe(
     //   currentProduct => this.selectedProduct = currentProduct
     // );
-    this.selectedProduct$ = this.store.select(getCurrentProduct)
+    this.selectedProduct$ = this.store.select(getCurrentProduct);
 
     // pobranie danych z selektora
     // this.store.select(getShowProductCode).subscribe(

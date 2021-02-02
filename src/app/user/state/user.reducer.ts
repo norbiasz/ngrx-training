@@ -5,7 +5,7 @@ export interface UserState {
 }
 
 const initialStateUser: UserState = {
-  maskUserName: true
+  maskUserName: false
 };
 
 // deklaracja stalej dla Feature Selector'a (nie exportujemy jej)

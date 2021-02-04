@@ -38,4 +38,31 @@ export class ProductEffects {
     );
   });
 
+  createProduct$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ProductPageActions.createProduct),
+        concatMap(action =>
+          this.productService.createProduct(action.product)
+            .pipe(
+              map(product => ProductApiActions.createProductSuccess({ product })),
+              catchError(error => of(ProductApiActions.createProductFailure({ error })))
+            )
+        )
+      );
+  });
+
+  deleteProduct$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ProductPageActions.deleteProduct),
+        mergeMap(action =>
+          this.productService.deleteProduct(action.productId).pipe(
+            map(() => ProductApiActions.deleteProductSuccess({ productId: action.productId })),
+            catchError(error => of(ProductApiActions.deleteProductFailure({ error })))
+          )
+        )
+      );
+  });
+
 }

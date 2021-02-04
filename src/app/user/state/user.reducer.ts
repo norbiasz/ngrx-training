@@ -16,8 +16,6 @@ export const getMaskUserName = createSelector(
   state => state.maskUserName
 );
 
-
-
 export const userReducer = createReducer<UserState>(
   initialStateUser,
   on(UserActions.maskUserName, (state): UserState => {
